@@ -28,6 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //TODO Override to implement Authorization logic
         //TODO configure web security
         http.authorizeHttpRequests()
+                .antMatchers("/").permitAll().and()
+                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/home", "/register", "/saveUser").permitAll()
                 .antMatchers("/welcome").authenticated()
                 .antMatchers("/admin").hasAnyAuthority("ADMIN")
@@ -35,5 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/mgr").hasAnyAuthority("MANAGER")
                 .antMatchers("/common").hasAnyAuthority("EMPLOYEE", "MANAGER", "ADMIN")
                 .anyRequest().authenticated();
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 }
