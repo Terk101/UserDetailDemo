@@ -25,22 +25,16 @@ public class UserService implements UserDetailsService, IUserService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByEmail(email);
-        try {
-            return userOptional.map(p -> {
-                Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-                p.getRoles().stream()
-                        .forEach(
-                                r -> grantedAuthorities.add(new SimpleGrantedAuthority(r)));
+        return userOptional.map(p -> {
+            Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+            p.getRoles()
+                    .forEach(
+                            r -> grantedAuthorities.add(new SimpleGrantedAuthority(r)));
 
-                return new org.springframework.security.core.userdetails.User(p.getUserName()
-                        , p.getPassword(),
-                        grantedAuthorities);
-            }).orElseThrow(() -> new UsernameNotFoundException("User not found " + email));
-        } catch (UsernameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+            return new org.springframework.security.core.userdetails.User(p.getUserName()
+                    , p.getPassword(),
+                    grantedAuthorities);
+        }).orElseThrow(() -> new UsernameNotFoundException("User not found " + email));
     }
 
     @Override
