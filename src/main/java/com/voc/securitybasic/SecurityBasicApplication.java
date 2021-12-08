@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class SecurityBasicApplication implements CommandLineRunner {
@@ -27,8 +28,8 @@ public class SecurityBasicApplication implements CommandLineRunner {
         User user1 = new User();
         user1.setUserName("Dummy1");
         user1.setEmail("Dummy1@mail.com");
-        user1.setPassword(bCryptPasswordEncoder.encode("1234"));
-        user1.setRoles(Arrays.asList("ADMIN", "EMPLOYEE"));
+        user1.setPassword(bCryptPasswordEncoder.encode("password"));
+        user1.setRoles(List.of("ADMIN", "EMPLOYEE"));
         userRepository.save(user1);
     }
 }
